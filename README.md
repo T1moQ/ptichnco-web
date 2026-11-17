@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ptich&Co
 
-## Getting Started
+Сайт семейного комплекса гостевых домов в Чемальском районе Республики Алтай.
+Первый выпуск — на русском языке, бронирование через существующий сервис
+«Бронируй Онлайн».
 
-First, run the development server:
+## Текущее состояние
+
+Базовый каркас Next.js и минимальная временная страница Ptich&Co.
+Установлены русский язык документа и базовые метаданные.
+Дизайн из Figma, каталог, страницы домов и бронирование ещё не реализованы.
+Стартовые шрифты и глобальные стили сохранены до отдельного этапа Foundations.
+
+## Окружение и зависимости
+
+Версии проверены локально 17 ноября 2026 года:
+
+| Инструмент | Версия |
+| --- | --- |
+| Node.js | 22.22.0 |
+| npm | 10.9.4 |
+| Next.js (App Router) | 16.4.6 |
+| React / React DOM | 19.3.0 |
+| TypeScript | 5.9.3 |
+| Tailwind CSS / @tailwindcss/turbopack | 4.3.3 |
+| ESLint | 9.39.5 |
+
+Точные версии зависимостей фиксирует `package-lock.json`.
+Упоминание React 19.3.1 в исходном контексте проекта — историческая запись;
+фактически в `package.json`, lock-файле и локальной установке используется 19.3.0.
+
+## Локальный запуск
+
+Установить зависимости из lock-файла:
+
+```bash
+npm ci
+```
+
+Запустить сервер разработки:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Открыть <http://localhost:3000>. Главная страница находится в `app/page.tsx`.
+Существующий `next/font/google` загружает Geist при сборке, поэтому для первой
+сборки нужен доступ к Google Fonts.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Проверки
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run build
+npx tsc --noEmit
+```
 
-## Learn More
+Сборка создаёт типы маршрутов Next.js, используемые в том числе `LayoutProps`.
+На чистой копии проекта выполняйте проверку TypeScript после сборки.
+ESLint запускается отдельно: `next build` его не выполняет.
 
-To learn more about Next.js, take a look at the following resources:
+Для локального запуска production-сборки после `npm run build`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Структура
 
-## Deploy on Vercel
+```text
+app/                     # App Router: layout, главная страница, глобальные стили
+public/                  # Статические файлы; пока ассеты стартового шаблона
+docs/PROJECT_CONTEXT.md  # Продуктовый контекст и открытые вопросы
+AGENTS.md                # Правила работы с проектом и инструкции Next.js
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`app/` остаётся в корне. Алиас `@/*` указывает на корень проекта (`./*`).
+Переход на `src/app` не планируется.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Работа над проектом
+
+Перед изменениями прочитать [AGENTS.md](AGENTS.md) и
+[контекст проекта](docs/PROJECT_CONTEXT.md). Документ контекста перенесён
+без изменения исходного содержимого; его описание начального состояния
+сохранено как история. Текущее техническое состояние описано в этом README.
+
+Документация установленной версии Next.js находится в
+`node_modules/next/dist/docs/`; перед изменением кода читать соответствующие разделы.
+`next dev` может восстанавливать служебные блоки в `AGENTS.md`.
+
+Разработка идёт небольшими согласованными этапами. Перенос шрифтов и токенов Figma,
+страницы сайта и внешние интеграции — отдельные задачи.
+Коммиты, публикация и развёртывание требуют явного разрешения.
