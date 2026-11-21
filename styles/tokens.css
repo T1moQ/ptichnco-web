@@ -1,0 +1,59 @@
+/*
+ * Manrope and the mobile H1–H3 / UI styles were read from Figma Foundations
+ * on 2026-11-21 (Mobile Typography, node 155:1240).
+ * See docs/FRONTEND_FOUNDATIONS.md for sources and unresolved values.
+ */
+@theme inline {
+  --font-sans: var(--font-manrope), Arial, Helvetica, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --text-heading-1: 1.625rem;
+  --text-heading-1--line-height: 2rem;
+  --text-heading-1--letter-spacing: -0.01em;
+  --text-heading-1--font-weight: 600;
+  --text-heading-2: 1.25rem;
+  --text-heading-2--line-height: 1.75rem;
+  --text-heading-2--letter-spacing: -0.01em;
+  --text-heading-2--font-weight: 600;
+  --text-heading-3: 1.125rem;
+  --text-heading-3--line-height: 1.625rem;
+  --text-heading-3--letter-spacing: -0.01em;
+  --text-heading-3--font-weight: 600;
+  --text-body: 1rem;
+  /* TODO(Figma): Body's label says 16/24; its Text Style says 16/19.2.
+   * Keep a provisional readable 24px line-height pending confirmation. */
+  --text-body--line-height: 1.5;
+  --text-body--font-weight: 400;
+  --text-ui: 0.875rem;
+  --text-ui--line-height: 1.25rem;
+  --text-ui--letter-spacing: 0;
+  --text-ui--font-weight: 600;
+}
+
+@layer base {
+  :root {
+    /* TEMPORARY: scaffold neutrals, not approved Figma color tokens. */
+    --background: #ffffff;
+    --foreground: #171717;
+    --action-background: var(--foreground);
+    --action-foreground: var(--background);
+    --action-hover-background: #383838;
+    --focus-color: var(--foreground);
+
+    /* TEMPORARY: spacing and geometry pending desktop/mobile layouts.
+     * The 48rem container cap preserves the previous scaffold width.
+     * Max width includes horizontal padding (Tailwind Preflight border-box). */
+    --space-small: 0.5rem;
+    --space-medium: 1rem;
+    --space-large: 1.5rem;
+    --space-section: 4rem;
+    --container-max-width: 48rem;
+    --container-gutter: clamp(var(--space-medium), 4vw, var(--space-large));
+    --control-min-height: 2.75rem;
+    --control-radius: 0.25rem;
+    --control-disabled-opacity: 0.5;
+    --focus-width: 2px;
+    --focus-offset: 3px;
+  }
+}
