@@ -1,0 +1,67 @@
+/* Local measurements from the supplied 320×600 and 1440×806 PNGs.
+ * Intermediate viewport sizes and the original-photo crops are interpolated;
+ * these values do not redefine the shared Foundations tokens. */
+.home-hero {
+	position: relative;
+	isolation: isolate;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	height: clamp(37.5rem, 100svh, 50rem);
+	min-height: 37.5rem;
+	overflow: hidden;
+	padding-inline: var(--container-gutter);
+	padding-bottom: clamp(6.875rem, 18.333svh, 9.167rem);
+}
+
+.home-hero__picture {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+}
+
+.home-hero__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	/* The two houses on the left are the focal point in the mobile reference. */
+	object-position: 12% center;
+}
+
+.home-hero__heading {
+	max-width: 100%;
+	border-radius: 1rem;
+	background: rgb(255 255 255 / 40%);
+	color: #222;
+	font-size: 2rem;
+	line-height: 2.25rem;
+	letter-spacing: -0.04em;
+	text-align: center;
+	padding: 4px;
+}
+
+@media (min-width: 64rem) {
+	.home-hero {
+		align-items: flex-start;
+		justify-content: flex-start;
+		height: clamp(40rem, 55.9722vw, 62.5rem);
+		min-height: 40rem;
+		padding-top: 7rem;
+		padding-bottom: 0;
+	}
+
+	.home-hero__image {
+		object-position: center top;
+		transform: scale(1.2);
+		transform-origin: 60% top;
+	}
+
+	.home-hero__heading {
+		border-radius: 0;
+		background: transparent;
+		font-size: var(--text-display);
+		line-height: var(--text-display--line-height);
+		letter-spacing: var(--text-heading-1--letter-spacing);
+		text-align: left;
+	}
+}

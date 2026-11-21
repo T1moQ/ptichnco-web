@@ -1,19 +1,15 @@
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
-import { Container } from "@/components/ui/container";
+import { Hero } from "@/components/sections/hero";
 
 export default function Home() {
   return (
-    <>
-      <Header />
-      <main className="flex flex-1 items-center py-(--space-section)">
-        <Container className="flex flex-col gap-(--space-large)">
-          <h1>Ptich&Co</h1>
-          <p>Гостевые дома в Чемальском районе Республики Алтай.</p>
-          <p>Новый сайт в разработке.</p>
-        </Container>
+    <div className="relative flex flex-1 flex-col">
+      <Header overlay />
+      <main>
+        <Hero />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

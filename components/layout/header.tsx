@@ -2,9 +2,15 @@ import { Menu } from "lucide-react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 
-export function Header() {
+export function Header({ overlay = false }: { overlay?: boolean }) {
   return (
-    <header className="w-full py-(--space-medium)">
+    <header
+      className={
+        overlay
+          ? "absolute inset-x-0 top-0 z-10 w-full py-6 lg:py-(--space-medium)"
+          : "w-full py-(--space-medium)"
+      }
+    >
       {/* Equal desktop side tracks keep the logo at the viewport centre. */}
       <Container className="grid min-h-14 max-w-none grid-cols-[minmax(0,1fr)_auto] items-center lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
         {/* Enable these native actions when menu/booking behaviour is defined. */}
