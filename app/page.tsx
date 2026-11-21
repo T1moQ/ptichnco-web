@@ -1,3 +1,4 @@
+import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { Container } from "@/components/ui/container";
 
@@ -12,6 +13,7 @@ export default function Home() {
           <p>Новый сайт в разработке.</p>
         </Container>
       </main>
+      <Footer />
     </>
   );
 }
