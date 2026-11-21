@@ -62,6 +62,9 @@
 
 @layer base {
   :root {
+    /* Confirmed Header control color; shared Button styling is unchanged. */
+    --header-control-color: #a7816a;
+
     /* TEMPORARY: scaffold neutrals, not approved Figma color tokens. */
     --background: #ffffff;
     --foreground: #171717;
