@@ -1,12 +1,27 @@
 /*
  * Manrope and the mobile H1–H3 / UI styles were read from Figma Foundations
  * on 2026-11-21 (Mobile Typography, node 155:1240).
+ * Desktop sizes and Cormorant Garamond / Editorial Quote were supplied by
+ * Timofey on the same date; missing weights/tracking are not inferred.
  * See docs/FRONTEND_FOUNDATIONS.md for sources and unresolved values.
  */
 @theme inline {
   --font-sans: var(--font-manrope), Arial, Helvetica, sans-serif;
+  --font-accent: var(--font-cormorant-garamond), serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+}
+
+/* Keep responsive text tokens OUT of @theme inline: utilities and @apply
+ * must reference var(--text-*) at runtime, not inline the mobile literals. */
+@theme {
+  /* TEMPORARY mobile aliases until these three roles are confirmed. */
+  --text-display: var(--text-heading-1);
+  --text-display--line-height: var(--text-heading-1--line-height);
+  --text-body-small: var(--text-body);
+  --text-body-small--line-height: var(--text-body--line-height);
+  --text-caption: var(--text-ui-label);
+  --text-caption--line-height: var(--text-ui-label--line-height);
 
   --text-heading-1: 1.625rem;
   --text-heading-1--line-height: 2rem;
@@ -29,6 +44,20 @@
   --text-ui--line-height: 1.25rem;
   --text-ui--letter-spacing: 0;
   --text-ui--font-weight: 600;
+  --text-ui-button: var(--text-ui);
+  --text-ui-button--line-height: var(--text-ui--line-height);
+  --text-ui-button--letter-spacing: var(--text-ui--letter-spacing);
+  --text-ui-button--font-weight: var(--text-ui--font-weight);
+  /* UI Label shares the size, not the unconfirmed weight/tracking. */
+  --text-ui-label: var(--text-ui);
+  --text-ui-label--line-height: var(--text-ui--line-height);
+  --text-editorial-quote: 2.25rem;
+  --text-editorial-quote--line-height: 2.5rem;
+}
+
+/* Extend the generated text utility so the accent family is never omitted. */
+@utility text-editorial-quote {
+  font-family: var(--font-accent);
 }
 
 @layer base {
@@ -55,5 +84,26 @@
     --control-disabled-opacity: 0.5;
     --focus-width: 2px;
     --focus-offset: 3px;
+  }
+
+  /* Reuse Tailwind's existing lg (64rem), not a new custom breakpoint.
+   * Only confirmed desktop sizes change; H3 retains its mobile values. */
+  @variant lg {
+    :root {
+      --text-display: 4.25rem;
+      --text-display--line-height: 4.5rem;
+      --text-heading-1: 3rem;
+      --text-heading-1--line-height: 3.5rem;
+      --text-heading-2: 2rem;
+      --text-heading-2--line-height: 2.5rem;
+      --text-body: 1.125rem;
+      --text-body--line-height: 1.75rem;
+      --text-body-small: 1rem;
+      --text-body-small--line-height: 1.5rem;
+      --text-caption: 0.8125rem;
+      --text-caption--line-height: 1.25rem;
+      --text-editorial-quote: 3.75rem;
+      --text-editorial-quote--line-height: 4.125rem;
+    }
   }
 }
