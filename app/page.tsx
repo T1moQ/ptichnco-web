@@ -1,6 +1,8 @@
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
+import { Booking } from "@/components/sections/booking";
 import { Hero } from "@/components/sections/hero";
+import { Intro } from "@/components/sections/intro";
 
 export default function Home() {
   return (
@@ -8,6 +10,8 @@ export default function Home() {
       <Header overlay />
       <main>
         <Hero />
+        <Booking />
+        <Intro />
       </main>
       <Footer />
     </div>
