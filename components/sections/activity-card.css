@@ -1,0 +1,52 @@
+/* Match Tailwind's lg breakpoint; the Polaroid styles below it stay intact. */
+@media (min-width: 64rem) {
+  .activity-card {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .activity-card__photo {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .activity-card__image {
+    --activity-image-position: var(--activity-desktop-image-position);
+  }
+
+  .activity-card__caption {
+    position: absolute;
+    inset: auto 0 0;
+    margin: 0;
+    padding: var(--space-medium);
+    background: #fff;
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+}
+
+/* Touch screens keep readable captions, without simulated/sticky hover. */
+@media (min-width: 64rem) and (hover: hover) {
+  .activity-card__caption {
+    opacity: 0;
+    transform: translateY(100%);
+    transition: transform 300ms ease-out, opacity 300ms ease-out;
+  }
+
+  .activity-card:hover .activity-card__caption,
+  .activity-card:focus-within .activity-card__caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 64rem) and (prefers-reduced-motion: reduce) {
+  .activity-card__caption {
+    transition: none;
+  }
+}
