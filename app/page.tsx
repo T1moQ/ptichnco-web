@@ -1,7 +1,9 @@
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
+import { Activities } from "@/components/sections/activities";
 import { BitePhrase } from "@/components/sections/bite-phrase";
 import { Booking } from "@/components/sections/booking";
+import { FinalCta } from "@/components/sections/final-cta";
 import { Hero } from "@/components/sections/hero";
 import { Intro } from "@/components/sections/intro";
 import { LodgesStickyScroll } from "@/components/sections/lodges-sticky-scroll";
@@ -18,6 +20,8 @@ export default function Home() {
         <LodgesStickyScroll />
         <TextTitlePage />
         <BitePhrase />
+        <Activities />
+        <FinalCta />
       </main>
       <Footer />
     </div>
