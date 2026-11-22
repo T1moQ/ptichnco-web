@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/header";
 import { Booking } from "@/components/sections/booking";
 import { Hero } from "@/components/sections/hero";
 import { Intro } from "@/components/sections/intro";
+import { LodgesStickyScroll } from "@/components/sections/lodges-sticky-scroll";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <Hero />
         <Booking />
         <Intro />
+        <LodgesStickyScroll />
       </main>
       <Footer />
     </div>
