@@ -65,3 +65,27 @@
 		text-align: left;
 	}
 }
+
+/* Single-photo composition from the cabins 1440×720 and 320×600 references.
+ * Keep its geometry isolated so the homepage art direction stays unchanged.
+ * Matching object-position and transform-origin keeps the focal point stable
+ * while enlarging the original photo to the reference crop. */
+.home-hero--single-image {
+	height: clamp(37.5rem, 50vw, 45rem);
+	min-height: 0;
+	padding: 0;
+}
+
+.home-hero--single-image .home-hero__image {
+	object-position: 15.5% 24%;
+	transform: scale(1.615);
+	transform-origin: 15.5% 24%;
+}
+
+@media (min-width: 64rem) {
+	.home-hero--single-image .home-hero__image {
+		object-position: 29% 40%;
+		transform: scale(1.21);
+		transform-origin: 29% 40%;
+	}
+}
