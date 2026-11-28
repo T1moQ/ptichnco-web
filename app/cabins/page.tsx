@@ -3,6 +3,8 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { Container } from "@/components/ui/container";
 import { Hero } from "@/components/sections/hero";
 import { Intro } from "@/components/sections/intro";
+import { cabins } from "@/components/sections/cabins-data";
+import { Lodge } from "@/components/sections/lodge";
 import cabinsPhoto from "@/public/images/Фото 06.05.2026, 12 57 36.jpg";
 
 const title = "Наши дома | Ptich&Co";
@@ -40,15 +42,8 @@ export default function CabinsPage() {
         title="Гостевые дома в стиле алтайских аилов"
         subtitle="для тех кто ценит спокойный отдых, комфорт и единение с природой"
       />
+      {cabins.map((lodge) => <Lodge key={lodge.slug} lodge={lodge} />)}
       <Container className="py-(--space-section)">
-        <section aria-labelledby="cabins-list-heading" className="mt-(--space-section)">
-          <h2 id="cabins-list-heading">Каталог домов</h2>
-          {/* TODO(cabins): approved house content and photo compositions. */}
-          <p className="text-body mt-(--space-large)">
-            Раздел в разработке. Здесь появятся фотографии и описания домов.
-          </p>
-        </section>
-
         <section aria-labelledby="cabins-booking-heading" className="mt-(--space-section)">
           <h2 id="cabins-booking-heading">Бронирование</h2>
           {/* TODO(booking): verified provider documentation and property ID. */}
