@@ -8,7 +8,9 @@ import type { LodgeData } from "./cabins-data";
 export function LodgeGallery({
   name,
   photos,
-}: Pick<LodgeData, "name" | "photos">) {
+  composition = "portraits-right",
+}: Pick<LodgeData, "name" | "photos" | "composition">) {
+  const wideLeft = composition === "wide-left";
   const trackRef = useRef<HTMLOListElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -48,14 +50,16 @@ export function LodgeGallery({
   }
 
   return (
-    <div className="relative min-w-0 lg:col-start-2 lg:row-start-1">
+    <div className={`relative min-w-0 lg:row-start-1 ${wideLeft ? "lg:col-start-1" : "lg:col-start-2"}`}>
       <ol
         ref={trackRef}
-        tabIndex={0}
-        aria-label={`Фотографии дома «${name}». Для пролистывания используйте стрелки влево и вправо.`}
+        tabIndex={photos.length > 1 ? 0 : undefined}
+        aria-label={`Фотографии дома «${name}».${photos.length > 1 ? " Для пролистывания используйте стрелки влево и вправо." : ""}`}
         onScroll={syncActiveSlide}
         onKeyDown={onKeyDown}
-        className="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] focus-visible:outline focus-visible:outline-offset-4 [&::-webkit-scrollbar]:hidden lg:aspect-[436/209] lg:auto-cols-fr lg:grid lg:grid-flow-col lg:gap-2.5 lg:overflow-visible"
+        className={`flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] focus-visible:outline focus-visible:outline-offset-4 [&::-webkit-scrollbar]:hidden lg:auto-cols-fr lg:grid lg:grid-flow-col lg:gap-2.5 lg:overflow-visible ${
+          wideLeft ? "lg:aspect-[997/431]" : "lg:aspect-[436/209]"
+        }`}
       >
         {photos.map(({ image, alt }, index) => (
           <li
@@ -67,7 +71,10 @@ export function LodgeGallery({
               src={encodeStaticImage(image)}
               alt={alt}
               fill
-              sizes="(min-width: 1440px) 284px, (min-width: 1024px) 20vw, calc(100vw - 32px)"
+              sizes={wideLeft
+                ? "(min-width: 1440px) 997px, (min-width: 1024px) calc((100vw - 160px) * 0.779), calc((100vw - 32px) * 2.25)"
+                : "(min-width: 1440px) 284px, (min-width: 1024px) 20vw, calc(100vw - 32px)"
+              }
               placeholder="blur"
               className="object-cover"
             />

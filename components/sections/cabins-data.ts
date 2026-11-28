@@ -2,6 +2,9 @@ import type { StaticImageData } from "next/image";
 import duplexLivingRoom from "@/public/images/cabins/duplex/Фото 30.04.2026, 04 51 29.jpg";
 import duplexBathroom from "@/public/images/cabins/duplex/Фото 30.04.2026, 04 53 27.jpg";
 import duplexDome from "@/public/images/cabins/duplex/Фото 30.04.2026, 04 51 35.jpg";
+import gzhelInterior from "@/public/images/cabins/gzhel/Фото 06.05.2026, 12 52 00.jpg";
+
+export type LodgeComposition = "portraits-right" | "wide-left";
 
 export type LodgePhoto = {
   image: StaticImageData;
@@ -14,6 +17,7 @@ export type LodgeData = {
   description: readonly string[];
   photos: readonly [LodgePhoto, ...LodgePhoto[]];
   slug: string;
+  composition?: LodgeComposition;
 };
 
 export const cabins: readonly LodgeData[] = [
@@ -30,5 +34,18 @@ export const cabins: readonly LodgeData[] = [
       { image: duplexDome, alt: "Деревянный купол и подвесной светильник в Дуплексе" },
     ],
     slug: "duplex",
+  },
+  {
+    name: "Гжель",
+    subtitle: "Белый и голубой.",
+    description: ["Светлый уютный интерьер с характерными деталями в стиле гжель."],
+    photos: [
+      {
+        image: gzhelInterior,
+        alt: "Кровать с синим покрывалом и бело-голубые шторы в доме «Гжель»",
+      },
+    ],
+    slug: "gzhel",
+    composition: "wide-left",
   },
 ];
