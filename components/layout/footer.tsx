@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   TbBrandFacebook,
   TbBrandInstagram,
@@ -40,11 +41,15 @@ export function Footer() {
         </ul>
 
         <nav aria-label="Навигация в подвале" className="mt-14 max-w-full">
-          {/* These pages do not exist yet; do not fabricate destinations. */}
+          {/* Only the catalogue is a page; other destinations await implementation. */}
           <ul className="text-heading-3 flex flex-col items-center gap-4 text-[1.5rem] leading-[1.2] tracking-normal lg:flex-row lg:flex-wrap lg:justify-center">
             {navigationItems.map((label) => (
               <li key={label}>
-                <span>{label}</span>
+                {label === "Домики" ? (
+                  <Link href="/cabins" className="no-underline">{label}</Link>
+                ) : (
+                  <span>{label}</span>
+                )}
               </li>
             ))}
           </ul>

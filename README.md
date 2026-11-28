@@ -6,12 +6,12 @@
 
 ## Текущее состояние
 
-Базовый каркас Next.js и минимальная временная страница Ptich&Co.
-Установлены русский язык документа и базовые метаданные.
-Дизайн из Figma, каталог, страницы домов и бронирование ещё не реализованы.
-Подготовлены `Container`, `Button`, базовые стили и переменные Tailwind 4.
-Подключён Manrope; мобильные H1–H3 и UI взяты из Figma. Остальные значения
-помечены как временные: см. [Frontend Foundations](docs/FRONTEND_FOUNDATIONS.md).
+Главная страница с Hero, фотографиями и sticky-scroll, текстовыми секциями,
+занятиями и общими Header/Footer. `/cabins` — каркас каталога с явно обозначенными
+заглушками списка домов и бронирования; отдельные страницы домов ещё не созданы.
+Меню на desktop и mobile ведёт на главную, каталог и раздел занятий на главной.
+Бронирование пока не подключено. Типографика и дизайн-токены описаны в
+[Frontend Foundations](docs/FRONTEND_FOUNDATIONS.md).
 
 ## Окружение и зависимости
 
@@ -67,13 +67,70 @@ ESLint запускается отдельно: `next build` его не вып�
 npm run start
 ```
 
+## SEO и окружения
+
+`metadataBase` и canonical используют production-домен `https://ptich-n-co.ru`.
+Title, description, canonical и Open Graph заданы на уровне страниц; язык,
+Twitter Card и общие настройки — в root layout. Общие поля Open Graph вынесены
+в `lib/seo.ts`, поскольку Next.js заменяет вложенный объект при наследовании.
+Twitter использует title, description и изображение из итогового Open Graph.
+
+Индексация разрешена только при `NODE_ENV=production` и production-окружении:
+
+- На Vercel используется `VERCEL_ENV`: только `production` разрешает индексацию.
+- На другом хостинге **до production-сборки задайте `SITE_ENV=production`**.
+  Для preview задайте `SITE_ENV=preview`. `VERCEL_ENV`, если присутствует,
+  имеет приоритет, поэтому Vercel Preview не станет индексируемым из-за `SITE_ENV`.
+- Development и окружения без явной настройки получают `noindex, follow`,
+  `Disallow: /` и пустой sitemap. Одного `npm run build` недостаточно для релиза.
+
+Пример сборки для production вне Vercel:
+
+```bash
+SITE_ENV=production npm run build
+SITE_ENV=production npm run start
+```
+
+Metadata, robots и sitemap статически формируются при сборке: после смены
+окружения нужна новая сборка. Не переносите preview-сборку в production.
+В production `/robots.txt` разрешает обход, а `/sitemap.xml` содержит только `/`.
+`/cabins` остаётся `noindex, follow` во всех окружениях до готовности каталога.
+Он не запрещён в production robots.txt, чтобы робот мог прочитать `noindex`.
+
+`app/opengraph-image.jpg` — JPEG 1200×630, центральный кроп существующей фотографии
+`public/images/Фото 06.05.2026, 12 54 33.jpg` (quality 82, mozjpeg).
+Исходник сохранён. Next.js подключает изображение и `opengraph-image.alt.txt`
+через файловые соглашения. `app/favicon.ico` получен из существующего
+`public/images/brand/logo.svg`, без изменения знака: PNG-слои 16, 32 и 48 px.
+
+`lib/static-image.ts` кодирует сегменты URL импортированных фотографий с пробелами
+и кириллицей: без этого production-оптимизатор установленного Next.js 16.4.6
+возвращает 404. Размеры, blur-placeholder и оригинальные файлы сохраняются.
+
+Перед релизом проверить production `/robots.txt`, `/sitemap.xml` и robots metadata.
+После утверждения каталога убрать его `noindex` и добавить `/cabins` в sitemap.
+Остаются отдельные задачи: финальные данные домов, макет каталога, документация
+и идентификаторы «Бронируй Онлайн», визуальная проверка в iPhone Safari.
+
+Проверка 24 ноября 2026: lint, TypeScript и production build прошли. Проверены
+сгенерированные metadata обеих страниц, семь комбинаций окружения, HTTP 200
+для `/`, `/cabins`, robots, sitemap, OG и favicon. В Chrome измерены обе страницы
+при 320/390/768/1440 px — горизонтального overflow нет. Все 22 изображения главной
+декодируются; sticky переключается вперёд и назад. Проверены ссылки меню и
+«Смотреть все дома», межстраничный якорь и Escape с возвратом фокуса.
+Это функциональная проверка и измерение DOM: получение скриншота через инструмент
+завершилось тайм-аутом, визуальная приёмка по макетам и iPhone Safari остаются TODO.
+
 ## Структура
 
 ```text
-app/                     # App Router: layout, главная страница, глобальные стили
+app/                     # Главная, /cabins, metadata, robots, sitemap, глобальные стили
+components/layout/       # SiteShell, Header, меню и Footer
+components/sections/     # Секции главной страницы
 components/ui/           # Container и Button
+lib/seo.ts               # Production URL, окружение и общие Open Graph поля
 styles/tokens.css        # CSS-переменные и Tailwind theme
-public/                  # Статические файлы; пока ассеты стартового шаблона
+public/                  # Фотографии, существующий логотип и статические файлы
 docs/PROJECT_CONTEXT.md  # Продуктовый контекст и открытые вопросы
 docs/FRONTEND_FOUNDATIONS.md # Источники стилей, API компонентов, уточнения
 AGENTS.md                # Правила работы с проектом и инструкции Next.js

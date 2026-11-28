@@ -1,4 +1,5 @@
 import { getImageProps } from 'next/image'
+import { encodeStaticImage } from '@/lib/static-image'
 import desktopPhoto from '@/public/images/Фото 06.05.2026, 12 54 33.jpg'
 import mobilePhoto from '@/public/images/Фото 06.05.2026, 12 57 36.jpg'
 import './hero.css'
@@ -13,10 +14,10 @@ export function Hero() {
 	}
 	const { props: desktop } = getImageProps({
 		...common,
-		src: desktopPhoto,
+		src: encodeStaticImage(desktopPhoto),
 		sizes: '120vw',
 	})
-	const { props: mobile } = getImageProps({ ...common, src: mobilePhoto })
+	const { props: mobile } = getImageProps({ ...common, src: encodeStaticImage(mobilePhoto) })
 
 	return (
 		<section aria-labelledby="hero-heading" className="home-hero">

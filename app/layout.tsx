@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { isProductionSite, sharedOpenGraph, siteUrl } from "@/lib/seo";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -15,9 +16,11 @@ const cormorantGaramond = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Ptich&Co — гостевые дома на Алтае",
-  description:
-    "Ptich&Co — семейный комплекс гостевых домов в Чемальском районе Республики Алтай.",
+  metadataBase: new URL(siteUrl),
+  title: "Ptich&Co",
+  openGraph: sharedOpenGraph,
+  twitter: { card: "summary_large_image" },
+  robots: { index: isProductionSite, follow: true },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

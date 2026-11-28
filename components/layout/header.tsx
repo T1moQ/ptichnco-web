@@ -1,6 +1,7 @@
-import { Menu } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
+import { HeaderMenu } from "./header-menu";
 
 export function Header({ overlay = false }: { overlay?: boolean }) {
   return (
@@ -13,29 +14,17 @@ export function Header({ overlay = false }: { overlay?: boolean }) {
     >
       {/* Equal desktop side tracks keep the logo at the viewport centre. */}
       <Container className="grid min-h-14 max-w-none grid-cols-[minmax(0,1fr)_auto] items-center lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
-        {/* Enable these native actions when menu/booking behaviour is defined. */}
-        <button
-          type="button"
-          disabled
-          aria-label="Открыть меню"
-          className="flex size-11 items-center justify-center justify-self-start text-(--header-control-color) disabled:cursor-not-allowed disabled:opacity-100 lg:size-14"
-        >
-          <Menu
-            size={40}
-            strokeWidth={2}
-            aria-hidden="true"
-            focusable="false"
-            className="shrink-0 lg:size-14"
-          />
-        </button>
+        <HeaderMenu />
 
-        <Image
-          src="/images/brand/logo.svg"
-          alt="Ptich&Co"
-          width={44}
-          height={44}
-          className="hidden size-11 object-contain lg:block"
-        />
+        <Link href="/" aria-label="Ptich&Co — главная" className="hidden lg:block">
+          <Image
+            src="/images/brand/logo.svg"
+            alt="Ptich&Co"
+            width={44}
+            height={44}
+            className="size-11 object-contain"
+          />
+        </Link>
 
         <button
           type="button"

@@ -1,4 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Container } from "@/components/ui/container";
+import { encodeStaticImage } from "@/lib/static-image";
 import { lodgeStories } from "./lodges-data";
 import { LodgesScrollController } from "./lodges-scroll-controller";
 
@@ -18,7 +21,7 @@ export function LodgesStickyScroll() {
               className="absolute inset-0 transition-opacity duration-500 ease-[ease-in-out] motion-reduce:transition-none"
             >
               <Image
-                src={image}
+                src={encodeStaticImage(image)}
                 alt={alt}
                 fill
                 sizes="(min-width: 1440px) 790px, (min-width: 1024px) calc((100vw - 168px) * 0.6212), 1px"
@@ -34,7 +37,7 @@ export function LodgesStickyScroll() {
             <li key={id} className="min-w-0">
               <div className="relative mb-6 aspect-[72/83] lg:hidden">
                 <Image
-                  src={image}
+                  src={encodeStaticImage(image)}
                   alt={alt}
                   fill
                   sizes="(min-width: 1024px) 1px, calc(100vw - 32px)"
@@ -49,6 +52,11 @@ export function LodgesStickyScroll() {
           ))}
         </ol>
       </LodgesScrollController>
+      <Container className="max-w-[90rem] px-4 pb-(--space-section) lg:px-16">
+        <Link href="/cabins" className="text-body inline-flex min-h-(--control-min-height) items-center">
+          Смотреть все дома
+        </Link>
+      </Container>
     </section>
   );
 }

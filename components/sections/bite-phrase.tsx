@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { encodeStaticImage } from "@/lib/static-image";
 import hammockPhoto from "@/public/images/attachment (3).jpeg";
 
 export function BitePhrase() {
@@ -10,7 +11,7 @@ export function BitePhrase() {
       {/* Match the 320×364 and 1440×804 crops without modifying the original.
           The mobile crop retains the sky above and the person in the hammock. */}
       <Image
-        src={hammockPhoto}
+        src={encodeStaticImage(hammockPhoto)}
         alt="Человек отдыхает в гамаке с видом на горы"
         fill
         sizes="100vw"
