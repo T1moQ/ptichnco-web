@@ -3,12 +3,18 @@ import duplexLivingRoom from "@/public/images/cabins/duplex/Фото 30.04.2026,
 import duplexBathroom from "@/public/images/cabins/duplex/Фото 30.04.2026, 04 53 27.jpg";
 import duplexDome from "@/public/images/cabins/duplex/Фото 30.04.2026, 04 51 35.jpg";
 import gzhelInterior from "@/public/images/cabins/gzhel/Фото 06.05.2026, 12 52 00.jpg";
+import provenceBed from "@/public/images/cabins/provans/Фото 06.05.2026, 12 35 20.jpg";
+import provenceTerrace from "@/public/images/cabins/provans/Фото 06.05.2026, 12 34 31.jpg";
+import provenceCups from "@/public/images/cabins/provans/Фото 06.05.2026, 12 36 35.jpg";
+import nizhniyInterior from "@/public/images/cabins/nizhniy/04A27CEE-F518-4515-9FD0-04DF22BC7633_1_201_a.jpeg";
 
-export type LodgeComposition = "portraits-right" | "wide-left";
+export type LodgeComposition = "portraits-right" | "wide-left" | "stacked-below-right" | "wide-below-left";
 
 export type LodgePhoto = {
   image: StaticImageData;
   alt: string;
+  objectPosition?: string;
+  desktopObjectPosition?: string;
 };
 
 export type LodgeData = {
@@ -47,5 +53,37 @@ export const cabins: readonly LodgeData[] = [
     ],
     slug: "gzhel",
     composition: "wide-left",
+  },
+  {
+    name: "Прованс",
+    subtitle: "Лёгкость и простота.",
+    description: ["Воздушный, спокойный интерьер с самым лучшим видом на луг и горы."],
+    photos: [
+      { image: provenceBed, alt: "Кровать и настенные светильники в доме «Прованс»" },
+      {
+        image: provenceTerrace,
+        alt: "Обеденный стол у стеклянной двери на террасу в доме «Прованс»",
+        objectPosition: "center 60%",
+        desktopObjectPosition: "center 75%",
+      },
+      { image: provenceCups, alt: "Голубые и белые чашки на деревянной полке в доме «Прованс»" },
+    ],
+    slug: "provence",
+    composition: "stacked-below-right",
+  },
+  {
+    name: "Нижний",
+    subtitle: "Современный и спокойный.",
+    description: ["Лучший аил для любителей уединённого отдыха: вы будете видеть то же, что и жители других домов, а вас на террасе не увидит никто."],
+    photos: [
+      {
+        image: nizhniyInterior,
+        alt: "Деревянная лестница, белая дверь и обеденный стол в доме «Нижний»",
+        objectPosition: "45% center",
+        desktopObjectPosition: "center 80%",
+      },
+    ],
+    slug: "nizhniy",
+    composition: "wide-below-left",
   },
 ];

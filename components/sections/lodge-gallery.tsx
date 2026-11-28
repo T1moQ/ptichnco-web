@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { encodeStaticImage } from "@/lib/static-image";
 import type { LodgeData } from "./cabins-data";
 
@@ -11,6 +11,17 @@ export function LodgeGallery({
   composition = "portraits-right",
 }: Pick<LodgeData, "name" | "photos" | "composition">) {
   const wideLeft = composition === "wide-left";
+  const stackedBelow = composition === "stacked-below-right";
+  const wideBelow = composition === "wide-below-left";
+  const galleryBelow = stackedBelow || wideBelow;
+  const isSlider = photos.length > 1 && !stackedBelow;
+  const sizes = stackedBelow
+    ? "(min-width: 1440px) 427px, (min-width: 1024px) calc((100vw - 160px) / 3), calc(100vw - 32px)"
+    : wideBelow
+      ? "(min-width: 1440px) 1312px, (min-width: 1024px) calc(100vw - 128px), calc((100vw - 32px) * 1.89)"
+      : wideLeft
+        ? "(min-width: 1440px) 997px, (min-width: 1024px) calc((100vw - 160px) * 0.779), calc((100vw - 32px) * 2.25)"
+        : "(min-width: 1440px) 284px, (min-width: 1024px) 20vw, calc(100vw - 32px)";
   const trackRef = useRef<HTMLOListElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -25,15 +36,15 @@ export function LodgeGallery({
 
   useEffect(() => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track || !isSlider) return;
     const observer = new ResizeObserver(syncActiveSlide);
     observer.observe(track);
     return () => observer.disconnect();
-  }, [syncActiveSlide]);
+  }, [syncActiveSlide, isSlider]);
 
   function onKeyDown(event: KeyboardEvent<HTMLOListElement>) {
     const track = trackRef.current;
-    if (!track || track.scrollWidth <= track.clientWidth) return;
+    if (!track || !isSlider || track.scrollWidth <= track.clientWidth) return;
     let target: number;
     switch (event.key) {
       case "ArrowRight": target = activeIndex + 1; break;
@@ -50,38 +61,54 @@ export function LodgeGallery({
   }
 
   return (
-    <div className={`relative min-w-0 lg:row-start-1 ${wideLeft ? "lg:col-start-1" : "lg:col-start-2"}`}>
+    <div className={`relative min-w-0 ${galleryBelow
+      ? "lg:col-start-1 lg:row-start-2"
+      : `lg:row-start-1 ${wideLeft ? "lg:col-start-1" : "lg:col-start-2"}`
+    }`}>
       <ol
         ref={trackRef}
-        tabIndex={photos.length > 1 ? 0 : undefined}
-        aria-label={`Фотографии дома «${name}».${photos.length > 1 ? " Для пролистывания используйте стрелки влево и вправо." : ""}`}
-        onScroll={syncActiveSlide}
-        onKeyDown={onKeyDown}
-        className={`flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] focus-visible:outline focus-visible:outline-offset-4 [&::-webkit-scrollbar]:hidden lg:auto-cols-fr lg:grid lg:grid-flow-col lg:gap-2.5 lg:overflow-visible ${
-          wideLeft ? "lg:aspect-[997/431]" : "lg:aspect-[436/209]"
-        }`}
+        tabIndex={isSlider ? 0 : undefined}
+        aria-label={`Фотографии дома «${name}».${isSlider ? " Для пролистывания используйте стрелки влево и вправо." : ""}`}
+        onScroll={isSlider ? syncActiveSlide : undefined}
+        onKeyDown={isSlider ? onKeyDown : undefined}
+        className={stackedBelow
+          ? "grid gap-2 lg:grid-cols-3 lg:gap-4"
+          : wideBelow
+            ? "grid"
+            : `flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] focus-visible:outline focus-visible:outline-offset-4 [&::-webkit-scrollbar]:hidden lg:auto-cols-fr lg:grid lg:grid-flow-col lg:gap-2.5 lg:overflow-visible ${wideLeft ? "lg:aspect-[997/431]" : "lg:aspect-[436/209]"}`
+        }
       >
-        {photos.map(({ image, alt }, index) => (
+        {photos.map(({ image, alt, objectPosition, desktopObjectPosition }, index) => (
           <li
             key={image.src}
             aria-label={`${index + 1} из ${photos.length}`}
-            className="relative aspect-2/3 min-w-0 shrink-0 basis-full snap-start snap-always lg:aspect-auto"
+            className={stackedBelow
+              // 288×216 mobile tiles; three equal 426.67×421 desktop tiles.
+              ? "relative min-w-0 aspect-4/3 lg:aspect-[1280/1263]"
+              : wideBelow
+                ? "relative min-w-0 aspect-2/3 lg:aspect-[1312/539]"
+                : "relative aspect-2/3 min-w-0 shrink-0 basis-full snap-start snap-always lg:aspect-auto"
+            }
           >
             <Image
               src={encodeStaticImage(image)}
               alt={alt}
               fill
-              sizes={wideLeft
-                ? "(min-width: 1440px) 997px, (min-width: 1024px) calc((100vw - 160px) * 0.779), calc((100vw - 32px) * 2.25)"
-                : "(min-width: 1440px) 284px, (min-width: 1024px) 20vw, calc(100vw - 32px)"
-              }
+              sizes={sizes}
               placeholder="blur"
-              className="object-cover"
+              className={`object-cover${objectPosition || desktopObjectPosition
+                ? " [object-position:var(--lodge-image-position)] lg:[object-position:var(--lodge-desktop-image-position)]"
+                : ""
+              }`}
+              style={objectPosition || desktopObjectPosition ? {
+                "--lodge-image-position": objectPosition ?? "center",
+                "--lodge-desktop-image-position": desktopObjectPosition ?? objectPosition ?? "center",
+              } as CSSProperties : undefined}
             />
           </li>
         ))}
       </ol>
-      {photos.length > 1 && (
+      {isSlider && (
         <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center lg:hidden">
           <div aria-hidden="true" className="flex h-6 items-center gap-2.5 rounded-full bg-black/20 px-4">
             {photos.map(({ image }, index) => (
